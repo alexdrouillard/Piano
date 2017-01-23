@@ -1,0 +1,20 @@
+module score_check ( 
+	input [5:0] input_score,
+	input enable, 
+	output reg win
+	);
+	
+	always@(posedge clock) begin
+		if (enable) begin
+			if (input_score == 6'b111_111) begin
+				win = 1'b1;
+			end
+		end
+		else
+			win = 1'b0;
+		end
+	end
+endmodule
+		
+		
+

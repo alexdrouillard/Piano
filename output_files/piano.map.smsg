@@ -1,0 +1,2 @@
+Warning (10268): Verilog HDL information at input_handler.v(98): always construct contains both blocking and non-blocking assignments File: D:/241/Final_working-READONLY/input_handler.v Line: 98
+Warning (10268): Verilog HDL information at level_mux.v(114): always construct contains both blocking and non-blocking assignments File: D:/241/Final_working-READONLY/level_mux.v Line: 114

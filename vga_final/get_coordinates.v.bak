@@ -1,0 +1,37 @@
+module get_coordinates(
+	input clock,
+	input reset;
+	
+	output [7:0] x,
+	output [6:0] y,
+	output [2:0] colour_out
+);
+
+reg [14:0] address_reg;
+
+//address counter
+always@ (*)
+begin
+	if (!reset) begin
+		address_reg = 15'0;
+		x = 8'b0;
+		y = 7'b0;
+	else
+		
+	else if (address_reg != 15'd32767) begin
+		x = address_reg % 160;
+		y = address_reg / 120;
+		address_reg = address_reg + 1;
+	end
+		
+	else
+		address_reg = 15'd32767;
+end
+
+start_memory MEM0 (
+	address(address_reg),
+	clock(clock),
+	q(colour_out)
+	);
+	
+endmodule

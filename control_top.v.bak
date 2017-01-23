@@ -1,0 +1,77 @@
+
+
+module control_top(
+    input clock,
+    input resetn,
+	input go,
+	
+	output reg auto_reset,
+	output reg level_one_active,
+	output reg play
+    );
+		
+    reg [5:0] current_state, next_state, play; 
+	
+    localparam  S_FREEPLAY				= 5'd0,
+						S_FREEPLAY_WAIT		= 5'd1,
+						S_LEVEL_ONE_RESET = 5'd4,
+						S_LEVEL_ONE			= 5'd2,
+						S_LEVEL_ONE_WAIT	= 5'd3,
+						S_PLAY_TONE			= 5'd5;
+    
+    // Next state logic aka our state table
+    always@(*)
+    begin: state_table 
+            case (current_state)
+                S_FREEPLAY: next_state 					= go ? S_FREEPLAY : S_FREEPLAY_WAIT;
+				
+				S_FREEPLAY_WAIT: next_state 			= go ? S_LEVEL_ONE_RESET : S_FREEPLAY_WAIT;
+				
+				S_LEVEL_ONE_RESET: next_state 		= S_PLAY_TONE;
+				
+				S_LEVEL_ONE: next_state 					= S_LEVEL_ONE_WAIT;
+				
+				S_LEVEL_ONE_WAIT: next_state 		= go ? S_LEVEL_ONE_WAIT : S_FREEPLAY;
+				
+				S_PLAY_TONE: next_state 					= S_LEVEL_ONE;
+				// we will be done our two operations, start over after
+				
+            default:     next_state 							= S_FREEPLAY;
+        endcase
+    end // state_table
+   
+
+    // Output logic aka all of our datapath control signals
+    always @(*)
+    begin: enable_signals
+        // By default make all our signals 0
+		level_one_active 	= 1'b0;
+		auto_reset 			= 1'b0;
+		play 						= 1'b0;
+
+        case (current_state)
+			S_LEVEL_ONE_RESET: begin
+				auto_reset = 1'b1;
+			end
+			
+            S_LEVEL_ONE: begin
+                level_one_active = 1'b1;
+            end
+			
+			S_PLAY_TONE: begin
+				play = 1'b1;
+			end
+			
+			
+        endcase
+    end // enable_signals
+   
+    // current_state registers
+    always@(posedge clock)
+    begin: state_FFs
+        if(resetn)
+            current_state <= S_FREEPLAY;
+        else
+            current_state <= next_state;
+    end // state_FFS
+endmodule

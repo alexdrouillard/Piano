@@ -1,0 +1,16 @@
+//TODO
+
+1. ~make game play audio before it expects audio
+2. Make sure ur stuff interacts well with vga
+3. ~Lives counter
+4. ~More precise pulses   (larger signals with more whitespace)
+
+6. ~Make it so we dont take input when giving them the stuff
+7. ~Make stuff start on 1st user input
+8. ~Figure out how to know when user is done with their input
+9. ~fix tone checker
+10. implement triangular waves
+11. ~implement life loss in control module
+12. Make some stuff look cool when you win
+13. Score on Hex
+14. Level on Hex
